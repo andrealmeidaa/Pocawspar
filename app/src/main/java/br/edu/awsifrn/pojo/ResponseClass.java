@@ -1,5 +1,5 @@
 package br.edu.awsifrn.pojo;
-
+//Classe que representa a resposta da API
 public class ResponseClass {
     private String greetings;
 

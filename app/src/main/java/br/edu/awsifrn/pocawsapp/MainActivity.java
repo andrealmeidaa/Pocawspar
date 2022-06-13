@@ -31,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
         EditText txtNome=findViewById(R.id.txtNome);
         EditText txtSobrenome=findViewById(R.id.txtSobrenome);
         btnBuscar.setOnClickListener(view -> {
+            //Criar uma instânica do cilente do Retrofit(https://square.github.io/retrofit/)
             Retrofit  retrofit = new Retrofit.Builder().baseUrl(ENDPOINT)
-                    .addConverterFactory(GsonConverterFactory.create()).build();
+                    .addConverterFactory(GsonConverterFactory.create()).build();//Usa o covnersar GSon para transformar objetos JSN em Java
+            //Cria o o serviço que representa a interface da API
             IAndroidSample servico=retrofit.create(IAndroidSample.class);
+
             Person person=new Person(txtNome.getText().toString(),txtSobrenome.getText().toString());
-            Call<ResponseClass> execution=servico.getGreetings(person);
-           execution.enqueue(new Callback<ResponseClass>() {
+            Call<ResponseClass> execution=servico.getGreetings(person);//Prepara chamada de um serviço específico
+           //Coloca na fila de execução e trata a resposta baseada em eventos
+            execution.enqueue(new Callback<ResponseClass>() {
                @Override
                public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
                    ResponseClass greetings=response.body();

@@ -1,4 +1,5 @@
 package br.edu.awsifrn.pojo;
+//Classe que encapsula um pojo, que pode ser submetido como parâmetro
 public class Person {
     private String firstName;
     private String lastName;
