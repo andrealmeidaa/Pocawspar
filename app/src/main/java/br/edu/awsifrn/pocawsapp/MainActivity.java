@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String ENDPOINT="https://rxb4icaagdmxpg5bo53ukx3kuq0gzwyd.lambda-url.us-east-1.on.aws/";
+    private static final String ENDPOINT="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,27 +30,24 @@ public class MainActivity extends AppCompatActivity {
         TextView txtResponse=findViewById(R.id.txtResponse);
         EditText txtNome=findViewById(R.id.txtNome);
         EditText txtSobrenome=findViewById(R.id.txtSobrenome);
-        btnBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Retrofit  retrofit = new Retrofit.Builder().baseUrl(ENDPOINT)
-                        .addConverterFactory(GsonConverterFactory.create()).build();
-                IAndroidSample servico=retrofit.create(IAndroidSample.class);
-                Person person=new Person(txtNome.getText().toString(),txtSobrenome.getText().toString());
-                Call<ResponseClass> execution=servico.getGreetings(person);
-               execution.enqueue(new Callback<ResponseClass>() {
-                   @Override
-                   public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
-                       ResponseClass greetings=response.body();
-                       txtResponse.setText(greetings.getGreetings());
-                   }
+        btnBuscar.setOnClickListener(view -> {
+            Retrofit  retrofit = new Retrofit.Builder().baseUrl(ENDPOINT)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            IAndroidSample servico=retrofit.create(IAndroidSample.class);
+            Person person=new Person(txtNome.getText().toString(),txtSobrenome.getText().toString());
+            Call<ResponseClass> execution=servico.getGreetings(person);
+           execution.enqueue(new Callback<ResponseClass>() {
+               @Override
+               public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
+                   ResponseClass greetings=response.body();
+                   txtResponse.setText(greetings.getGreetings());
+               }
 
-                   @Override
-                   public void onFailure(Call<ResponseClass> call, Throwable t) {
-                       Log.e("Lambda", "Erro ao realizar chamada:" + t.getMessage());
-                   }
-               });
-            }
+               @Override
+               public void onFailure(Call<ResponseClass> call, Throwable t) {
+                   Log.e("Lambda", "Erro ao realizar chamada:" + t.getMessage());
+               }
+           });
         });
 
     }
